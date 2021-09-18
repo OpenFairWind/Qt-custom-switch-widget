@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource>
+        <file>resources/images/h_on.png</file>
+        <file>resources/images/h_off.png</file>
+    </qresource>
+</RCC>

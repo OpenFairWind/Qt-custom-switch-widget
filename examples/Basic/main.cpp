@@ -1,0 +1,15 @@
+//
+// Created by Raffaele Montella on 18/09/21.
+//
+
+#include "mainwindow.hpp"
+#include <QApplication>
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+
+    return a.exec();
+}

@@ -7,9 +7,13 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
+set(QCSWITCHWIDGET_RESOURCE qcswitchwidget.qrc)
+qt5_add_resources(QCSWITCHWIDGET_RESOURCE_ADDED ${QCSWITCHWIDGET_RESOURCE})
+
 add_library(qcswitchwidget SHARED
         include/qcswitchwidget.hpp
         src/qcswitchwidget.cpp
+        ${QCSWITCHWIDGET_RESOURCE_ADDED}
         )
 
 target_include_directories(qcswitchwidget

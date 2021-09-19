@@ -4,18 +4,27 @@
 
 
 #include <QStyleOption>
+#include <utility>
 #include "qcswitchwidget.hpp"
 
 QcSwitchWidget::QcSwitchWidget(QWidget *parent) :
         QWidget(parent)
 {
-    setMinimumSize(250,250);
+    mDrawBezel = true;
+    mTextPosition = 0;
 
+    mBazelRadius = 0;
     mState = false;
 
+    mFalseFilename=":/resources/images/h_off.png";
+    mTrueFilename=":/resources/images/h_on.png";
 
+    mXBackgroundOffset = 0;
+    mYBackgroundOffset = 0;
 
-    //connect(this, SIGNAL(clicked()), this, SLOT(quit()));
+    mBazelPen = QColorConstants::White;
+    mTextPen = QColorConstants::White;
+    mTextFont = this->font();
 }
 
 void QcSwitchWidget::paintEvent(QPaintEvent */*paintEvt*/)
@@ -29,17 +38,88 @@ void QcSwitchWidget::paintEvent(QPaintEvent */*paintEvt*/)
     QString fileName="";
 
     if (mState) {
-        fileName=":/resources/images/h_on.png";
+        fileName=mTrueFilename;
     } else {
-        fileName=":/resources/images/h_off.png";
+        fileName=mFalseFilename;
     }
-
     QPixmap pixmap(fileName);
 
-    painter.drawPixmap(0,0,284,88, pixmap);
+    if (mTextPosition<3) {
+        this->setFixedSize(pixmap.size());
+    } else {
+        this->setFixedSize(pixmap.width()*2,pixmap.height());
+    }
+
+    painter.setFont(mTextFont);
+    QFontMetrics fontMetrics(painter.font());
+    auto boundingRect = fontMetrics.boundingRect(mLabel);
+    int xOffset = (this->width()-boundingRect.width())/2;
+    int yOffset = boundingRect.height();
+
+    if (mDrawBezel) {
+        mXBackgroundOffset = 5;
+        mYBackgroundOffset = 5;
+        painter.setPen(mBazelPen);
+        painter.drawRoundedRect(0, 0, this->width(), this->height(), mBazelRadius, mBazelRadius, Qt::AbsoluteSize);
+    }
+
+    switch (mTextPosition) {
+        case 1:
+            painter.drawPixmap(
+                    mXBackgroundOffset, yOffset,
+                    this->width() - 2 * mXBackgroundOffset,
+                    this->height() - yOffset - mYBackgroundOffset,
+                    pixmap);
+            painter.setPen(mTextPen);
+            painter.drawText(xOffset, yOffset, mLabel);
+            break;
+
+        case 2:
+            painter.drawPixmap(
+                    mXBackgroundOffset, mYBackgroundOffset,
+                    this->width() - 2 * mXBackgroundOffset,
+                    this->height() - yOffset - 2 * mYBackgroundOffset,
+                    pixmap);
+            painter.setPen(mTextPen);
+            painter.drawText(xOffset, height()-yOffset/2, mLabel);
+            break;
+
+        case 3:
+            painter.drawPixmap(
+                    this->width()/2+mXBackgroundOffset,
+                    mYBackgroundOffset,
+                    this->width()/2-2*mXBackgroundOffset,
+                    this->height()-2*mYBackgroundOffset,
+                    pixmap);
+            painter.setPen(mTextPen);
+            painter.drawText(mXBackgroundOffset,  this->height()/2, mLabel);
+            break;
+
+        case 4:
+            painter.drawPixmap(
+                    mXBackgroundOffset,
+                    mYBackgroundOffset,
+                    this->width()/2-2*mXBackgroundOffset,
+                    this->height()-2*mYBackgroundOffset,
+                    pixmap);
+            painter.setPen(mTextPen);
+            painter.drawText(this->width()/2+mXBackgroundOffset,  this->height()/2, mLabel);
+            break;
+
+        default:
+            painter.drawPixmap(
+                    mXBackgroundOffset, mYBackgroundOffset,
+                    this->width() - 2 * mXBackgroundOffset,
+                    this->height() - 2 * mYBackgroundOffset,
+                    pixmap);
+            painter.setPen(mTextPen);
+            painter.drawText(xOffset, this->height()/2, mLabel);
+            break;
+    }
+
 }
 
-bool QcSwitchWidget::getState() {
+bool QcSwitchWidget::getState() const {
     return mState;
 }
 
@@ -59,3 +139,85 @@ void QcSwitchWidget::mouseReleaseEvent(QMouseEvent *) {
     emit released();
     emit clicked();
 }
+
+void QcSwitchWidget::setLabel(QString label) {
+    mLabel=std::move(label);
+    repaint();
+}
+
+QString QcSwitchWidget::getLabel() {
+    return mLabel;
+}
+
+void QcSwitchWidget::setBazelRadius(int bazelRadius) {
+    mBazelRadius = bazelRadius;
+    repaint();
+}
+
+int QcSwitchWidget::getBazelRadius() const {
+    return mBazelRadius;
+}
+
+void QcSwitchWidget::setTrueFilename(QString trueFilename) {
+    mTrueFilename = std::move(trueFilename);
+    repaint();
+}
+
+QString QcSwitchWidget::getTrueFilename() {
+    return mTrueFilename;
+}
+
+void QcSwitchWidget::setFalseFilename(QString falseFilename) {
+    mFalseFilename = std::move(falseFilename);
+    repaint();
+}
+
+QString QcSwitchWidget::getFalseFilename() {
+    return mFalseFilename;
+}
+
+void QcSwitchWidget::setTextPen(QPen pen) {
+    mTextPen = std::move(pen);
+    repaint();
+}
+
+void QcSwitchWidget::setTextFont(QFont font) {
+    mTextFont = std::move(font);
+    repaint();
+}
+
+void QcSwitchWidget::setBazelPen(QPen pen) {
+    mBazelPen = std::move(pen);
+    repaint();
+}
+
+void QcSwitchWidget::setTextPosition(int textPosition) {
+    mTextPosition = textPosition;
+    repaint();
+}
+
+int QcSwitchWidget::getTextPosition() const {
+    return  mTextPosition;
+}
+
+QPen QcSwitchWidget::getTextPen() {
+    return mTextPen;
+}
+
+QFont QcSwitchWidget::getTextFont() {
+    return mTextFont;
+}
+
+QPen QcSwitchWidget::getBazelPen() {
+    return mBazelPen;
+}
+
+bool QcSwitchWidget::getDrawBezel() {
+    return mDrawBezel;
+}
+
+void QcSwitchWidget::setDrawBezel(bool drawBezel) {
+    mDrawBezel = drawBezel;
+}
+
+

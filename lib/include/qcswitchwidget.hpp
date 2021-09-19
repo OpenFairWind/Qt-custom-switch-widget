@@ -30,8 +30,35 @@ Q_OBJECT
 public:
     explicit QcSwitchWidget(QWidget *parent = 0);
 
+    void setDrawBezel(bool drawBezel);
+    bool getDrawBezel();
+
+    void setTextPosition(int textPosition);
+    int getTextPosition() const;
+
+    void setTextPen(QPen pen);
+    QPen getTextPen();
+
+    void setTextFont(QFont font);
+    QFont getTextFont();
+
+    void setBazelPen(QPen pen);
+    QPen getBazelPen();
+
+    void setTrueFilename(QString trueFilename);
+    QString getTrueFilename();
+
+    void setFalseFilename(QString falseFilename);
+    QString getFalseFilename();
+
+    void setBazelRadius(int bazelRadius);
+    int getBazelRadius() const;
+
+    void setLabel(QString label);
+    QString getLabel();
+
     void setState(bool state);
-    bool getState();
+    bool getState() const;
 
 signals:
     void clicked();
@@ -46,7 +73,23 @@ private:
     void paintEvent(QPaintEvent *);
 
 private:
+    bool mDrawBezel;
+
+    int mTextPosition;
+
     bool mState;
+    QString mLabel;
+    int mBazelRadius;
+    QString mTrueFilename;
+    QString mFalseFilename;
+
+    QPen mTextPen;
+    QPen mBazelPen;
+    QFont mTextFont;
+    int mXBackgroundOffset;
+    int mYBackgroundOffset;
+
+    void drawBezel(bool drawBezel);
 };
 
 

@@ -30,13 +30,23 @@ Q_OBJECT
 public:
     explicit QcSwitchWidget(QWidget *parent = 0);
 
+    void setState(bool state);
+    bool getState();
+
 signals:
+    void clicked();
+    void released();
+    void pressed();
 
 public slots:
 
 private:
+    void mousePressEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*);
     void paintEvent(QPaintEvent *);
 
+private:
+    bool mState;
 };
 
 

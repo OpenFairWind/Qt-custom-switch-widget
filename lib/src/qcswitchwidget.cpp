@@ -571,7 +571,7 @@ ToggleButton::ToggleButton(QWidget* parent): QWidget(parent)
 
 ToggleButton::~ToggleButton()
 {}
-
+//max-width: 180px;
 void ToggleButton::setStylesheet(QString iconCheckPath, QString iconUncheckPath)
 {
     QFile fileIconCheck(iconCheckPath);
@@ -580,7 +580,7 @@ void ToggleButton::setStylesheet(QString iconCheckPath, QString iconUncheckPath)
         qDebug("File doesn't exists. Please check input file path!.");
     else {
         QString styleSheet = "QPushButton#" + pushButton->objectName() +
-                             "{ border:0px; height: 60px; min-width: 180px; max-width: 180px; border:0px;";
+                             "{ border:0px; height: 60px; min-width: 180px; border:0px;";
         styleSheet.append("border-image: url(");
         styleSheet.append(iconCheckPath);
         styleSheet.append(") 0 0 0 0 stretch stretch;margin-left:5px;margin-right:5px;padding: 0px;background-color:none;}");

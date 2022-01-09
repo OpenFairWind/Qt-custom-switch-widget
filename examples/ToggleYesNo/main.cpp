@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     QHBoxLayout layout;
     widget->setLayout(&layout);
     widget->setMinimumSize(100,50);
-    SwitchButton* sbtn = new SwitchButton(widget, SwitchButton::Style::YESNO);
+    ToggleButton* sbtn = new ToggleButton(widget, ToggleButton::Style::YESNO);
     layout.addWidget(sbtn);
     widget->show();
     return a.exec();

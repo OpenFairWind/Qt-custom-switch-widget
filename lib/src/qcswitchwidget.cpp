@@ -221,7 +221,7 @@ void QcSwitchWidget::setDrawBezel(bool drawBezel) {
     mDrawBezel = drawBezel;
 }
 
-SwitchBackground::SwitchBackground(QWidget* parent, QColor color, bool rect)
+ToggleBackground::ToggleBackground(QWidget* parent, QColor color, bool rect)
         : QWidget(parent)
         , _rect(rect)
         , _borderradius(12)
@@ -245,10 +245,10 @@ SwitchBackground::SwitchBackground(QWidget* parent, QColor color, bool rect)
 
     _enabled = true;
 }
-SwitchBackground::~SwitchBackground()
+ToggleBackground::~ToggleBackground()
 {
 }
-void SwitchBackground::paintEvent(QPaintEvent*)
+void ToggleBackground::paintEvent(QPaintEvent*)
 {
     QPainter* painter = new QPainter;
     painter->begin(this);
@@ -278,13 +278,13 @@ void SwitchBackground::paintEvent(QPaintEvent*)
     }
     painter->end();
 }
-void SwitchBackground::setEnabled(bool flag)
+void ToggleBackground::setEnabled(bool flag)
 {
     _enabled = flag;
 }
 
 
-SwitchCircle::SwitchCircle(QWidget* parent, QColor color, bool rect)
+ToggleCircle::ToggleCircle(QWidget* parent, QColor color, bool rect)
         : QWidget(parent)
         , _rect(rect)
         , _borderradius(12)
@@ -312,10 +312,10 @@ SwitchCircle::SwitchCircle(QWidget* parent, QColor color, bool rect)
 
     _enabled = true;
 }
-SwitchCircle::~SwitchCircle()
+ToggleCircle::~ToggleCircle()
 {
 }
-void SwitchCircle::paintEvent(QPaintEvent*)
+void ToggleCircle::paintEvent(QPaintEvent*)
 {
     QPainter* painter = new QPainter;
     painter->begin(this);
@@ -345,12 +345,12 @@ void SwitchCircle::paintEvent(QPaintEvent*)
 
     painter->end();
 }
-void SwitchCircle::setEnabled(bool flag)
+void ToggleCircle::setEnabled(bool flag)
 {
     _enabled = flag;
 }
 
-SwitchButton::SwitchButton(QWidget* parent, Style style, bool startValue)
+ToggleButton::ToggleButton(QWidget* parent, Style style, bool startValue)
         : QWidget(parent)
         , _value(startValue)
         , _duration(100)
@@ -381,9 +381,9 @@ SwitchButton::SwitchButton(QWidget* parent, Style style, bool startValue)
     _tol = 0;
     _borderradius = 12;
     _labeloff = new QLabel(this);
-    _background = new SwitchBackground(this, _oncolor);
+    _background = new ToggleBackground(this, _oncolor);
     _labelon = new QLabel(this);
-    _circle = new SwitchCircle(this, _offcolor);
+    _circle = new ToggleCircle(this, _offcolor);
     __btn_move = new QPropertyAnimation(this);
     __back_move = new QPropertyAnimation(this);
 
@@ -431,7 +431,7 @@ SwitchButton::SwitchButton(QWidget* parent, Style style, bool startValue)
     _circle->move(2, 2);
 }
 
-SwitchButton::~SwitchButton()
+ToggleButton::~ToggleButton()
 {
     delete _circle;
     delete _background;
@@ -440,7 +440,7 @@ SwitchButton::~SwitchButton()
     delete __btn_move;
     delete __back_move;
 }
-void SwitchButton::paintEvent(QPaintEvent*)
+void ToggleButton::paintEvent(QPaintEvent*)
 {
     QPainter* painter = new QPainter;
     painter->begin(this);
@@ -470,7 +470,7 @@ void SwitchButton::paintEvent(QPaintEvent*)
     }
     painter->end();
 }
-void SwitchButton::mousePressEvent(QMouseEvent*)
+void ToggleButton::mousePressEvent(QMouseEvent*)
 {
     if (!_enabled)
         return;
@@ -510,7 +510,7 @@ void SwitchButton::mousePressEvent(QMouseEvent*)
     _value = !_value;
    // emit valueChanged(_value);
 }
-void SwitchButton::setEnabled(bool flag)
+void ToggleButton::setEnabled(bool flag)
 {
     _enabled = flag;
     _circle->setEnabled(flag);
@@ -526,7 +526,7 @@ void SwitchButton::setEnabled(bool flag)
     }
     QWidget::setEnabled(flag);
 }
-void SwitchButton::setValue(bool flag)
+void ToggleButton::setValue(bool flag)
 {
     if (flag == value())
         return;
@@ -537,11 +537,11 @@ void SwitchButton::setValue(bool flag)
         setEnabled(_enabled);
     }
 }
-bool SwitchButton::value() const
+bool ToggleButton::value() const
 {
     return _value;
 }
-void SwitchButton::_update()
+void ToggleButton::_update()
 {
     int hback = 20;
     QSize final_size(width() - 4, hback);
@@ -559,7 +559,7 @@ void SwitchButton::_update()
     _background->resize(final_size);
 }
 
-ToggleButton::ToggleButton(QWidget* parent): QWidget(parent)
+SwitchButton::SwitchButton(QWidget* parent): QWidget(parent)
 {
     QVBoxLayout* vLay = new QVBoxLayout(this);
     pushButton = new QPushButton(this);
@@ -569,10 +569,10 @@ ToggleButton::ToggleButton(QWidget* parent): QWidget(parent)
     this->setLayout(vLay);
 }
 
-ToggleButton::~ToggleButton()
+SwitchButton::~SwitchButton()
 {}
 //max-width: 180px;
-void ToggleButton::setStylesheet(QString iconCheckPath, QString iconUncheckPath)
+void SwitchButton::setStylesheet(QString iconCheckPath, QString iconUncheckPath)
 {
     QFile fileIconCheck(iconCheckPath);
     QFile fileIconUnCheck(iconUncheckPath);
@@ -593,7 +593,7 @@ void ToggleButton::setStylesheet(QString iconCheckPath, QString iconUncheckPath)
     }
 }
 
-QLabel* ToggleButton::addLabel(float position)
+QLabel* SwitchButton::addLabel(float position)
 {
     auto item = new QLabel(this);
     return item;

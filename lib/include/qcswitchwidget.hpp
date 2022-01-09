@@ -29,10 +29,10 @@
 #endif
 
 class QcSwitchWidget;
-class SwitchBackground;
-class SwitchCircle;
-class SwitchButton;
+class ToggleBackground;
+class ToggleCircle;
 class ToggleButton;
+class SwitchButton;
 
 class QCSWITCH_DECL QcSwitchWidget : public QWidget
 {
@@ -102,12 +102,12 @@ private:
     void drawBezel(bool drawBezel);
 };
 
-class QCSWITCH_DECL SwitchBackground : public QWidget
+class QCSWITCH_DECL ToggleBackground : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SwitchBackground(QWidget* parent = nullptr, QColor color = QColor(154, 205, 50), bool rect = false);
-    ~SwitchBackground() override;
+    explicit ToggleBackground(QWidget* parent = nullptr, QColor color = QColor(154, 205, 50), bool rect = false);
+    ~ToggleBackground() override;
     void paintEvent(QPaintEvent* event) override;
     void setEnabled(bool);
 
@@ -122,12 +122,12 @@ private:
     bool _enabled;
 };
 
-class QCSWITCH_DECL SwitchCircle : public QWidget
+class QCSWITCH_DECL ToggleCircle : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SwitchCircle(QWidget* parent = nullptr, QColor color = QColor(255, 255, 255), bool rect = false);
-    ~SwitchCircle() override;
+    explicit ToggleCircle(QWidget* parent = nullptr, QColor color = QColor(255, 255, 255), bool rect = false);
+    ~ToggleCircle() override;
     void paintEvent(QPaintEvent* event) override;
     void setEnabled(bool);
 
@@ -143,7 +143,7 @@ private:
     bool _enabled;
 };
 
-class QCSWITCH_DECL SwitchButton : public QWidget
+class QCSWITCH_DECL ToggleButton : public QWidget
 {
     Q_OBJECT
 public:
@@ -156,8 +156,8 @@ public:
     };
 
 public:
-    SwitchButton(QWidget *parent = nullptr, Style style = Style::ONOFF, bool startValue = false);
-    ~SwitchButton();
+    ToggleButton(QWidget *parent = nullptr, Style style = Style::ONOFF, bool startValue = false);
+    ~ToggleButton();
 
     void mousePressEvent(QMouseEvent *) override;
     void paintEvent(QPaintEvent* event) override;
@@ -180,9 +180,9 @@ private:
     int    _borderradius;
 
     QLabel*           _labeloff;
-    SwitchBackground* _background;
+    ToggleBackground* _background;
     QLabel*           _labelon;
-    SwitchCircle*     _circle;
+    ToggleCircle*     _circle;
 
     bool _enabled=true;
 
@@ -193,12 +193,12 @@ private:
 
 static QCSWITCH_DECL void setStylesheet(QWidget*, QString );
 
-class QCSWITCH_DECL ToggleButton :public QWidget
+class QCSWITCH_DECL SwitchButton : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ToggleButton(QWidget* parent = nullptr);
-    ~ToggleButton();
+    explicit SwitchButton(QWidget* parent = nullptr);
+    ~SwitchButton();
     void setStylesheet(QString, QString);
     QLabel* addLabel(float);
 

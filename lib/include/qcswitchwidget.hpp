@@ -106,20 +106,14 @@ class QCSWITCH_DECL ToggleBackground : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ToggleBackground(QWidget* parent = nullptr, QColor color = QColor(154, 205, 50), bool rect = false);
+    explicit ToggleBackground(QWidget* parent = nullptr, QColor color = Qt::white, bool rect = false);
     ~ToggleBackground() override;
     void paintEvent(QPaintEvent* event) override;
-    void setEnabled(bool);
 
 private:
     bool            _rect;
     int             _borderradius;
-    QColor          _color;
     QColor          _pencolor;
-    QLinearGradient _gradient;
-    QLinearGradient _gdisabled;
-
-    bool _enabled;
 };
 
 class QCSWITCH_DECL ToggleCircle : public QWidget
@@ -129,7 +123,6 @@ public:
     explicit ToggleCircle(QWidget* parent = nullptr, QColor color = QColor(255, 255, 255), bool rect = false);
     ~ToggleCircle() override;
     void paintEvent(QPaintEvent* event) override;
-    void setEnabled(bool);
 
 private:
     bool            _rect;
@@ -138,9 +131,6 @@ private:
     QColor          _pencolor;
     QRadialGradient _radGradient;
     QLinearGradient _gradient;
-    QLinearGradient _gdisabled;
-
-    bool _enabled;
 };
 
 class QCSWITCH_DECL ToggleButton : public QWidget
@@ -156,12 +146,11 @@ public:
     };
 
 public:
-    ToggleButton(QWidget *parent = nullptr, Style style = Style::ONOFF, bool startValue = false);
+    ToggleButton(QWidget *parent = nullptr, Style style = Style::ONOFF, bool startValue = false, QColor background = Qt::white);
     ~ToggleButton();
 
     void mousePressEvent(QMouseEvent *) override;
     void paintEvent(QPaintEvent* event) override;
-    void setEnabled(bool);
     void setValue(bool);
     bool value() const;
 
@@ -170,8 +159,7 @@ private:
     int  _duration;
 
     QLinearGradient _gradient1;
-    QLinearGradient _gradient2;
-    QLinearGradient _gdisabled;
+    //QLinearGradient _gradient2;
 
     QColor _pencolor;
     QColor _offcolor;
@@ -183,8 +171,6 @@ private:
     ToggleBackground* _background;
     QLabel*           _labelon;
     ToggleCircle*     _circle;
-
-    bool _enabled=true;
 
     QPropertyAnimation* __btn_move;
     QPropertyAnimation* __back_move;

@@ -225,25 +225,11 @@ ToggleBackground::ToggleBackground(QWidget* parent, QColor color, bool rect)
         : QWidget(parent)
         , _rect(rect)
         , _borderradius(12)
-        , _color(color)
-        , _pencolor(QColor(170, 170, 170))
+        , _pencolor(color)
 {
-    setFixedHeight(20);
-
-    _gradient = QLinearGradient(0, 25, 70, 0);
-    _gradient.setColorAt(0, QColor(154, 194, 50));
-    _gradient.setColorAt(0.25, QColor(154, 210, 50));
-    _gradient.setColorAt(0.95, QColor(154, 194, 50));
-
-    _gdisabled = QLinearGradient(0, 25, 70, 0);
-    _gdisabled.setColorAt(0, QColor(190, 190, 190));
-    _gdisabled.setColorAt(0.25, QColor(230, 230, 230));
-    _gdisabled.setColorAt(0.95, QColor(190, 190, 190));
-
     if (_rect)
         _borderradius = 0;
 
-    _enabled = true;
 }
 ToggleBackground::~ToggleBackground()
 {
@@ -256,33 +242,12 @@ void ToggleBackground::paintEvent(QPaintEvent*)
 
     QPen pen(Qt::NoPen);
     painter->setPen(pen);
-    if (_enabled)
-    {
-        painter->setBrush(QColor(154, 190, 50));
-        painter->drawRoundedRect(0, 0
-                , width(), height()
-                , 10, 10);
-
-        painter->setBrush(_gradient);
-        painter->drawRoundedRect(1, 1, width()-2, height()-2, 8, 8);
-    }
-    else
-    {
-        painter->setBrush(QColor(150, 150, 150));
-        painter->drawRoundedRect(0, 0
-                , width(), height()
-                , 10, 10);
-
-        painter->setBrush(_gdisabled);
-        painter->drawRoundedRect(1, 1, width() - 2, height() - 2, 8, 8);
-    }
+    painter->setBrush(_pencolor);
+    painter->drawRoundedRect(0, 0
+             , width(), height()
+             , 10, 10);
     painter->end();
 }
-void ToggleBackground::setEnabled(bool flag)
-{
-    _enabled = flag;
-}
-
 
 ToggleCircle::ToggleCircle(QWidget* parent, QColor color, bool rect)
         : QWidget(parent)
@@ -291,8 +256,6 @@ ToggleCircle::ToggleCircle(QWidget* parent, QColor color, bool rect)
         , _color(color)
         , _pencolor(QColor(120, 120, 120))
 {
-    setFixedSize(20, 20);
-
     _radGradient = QRadialGradient(static_cast<int>(width() / 2), static_cast<int>(height() / 2), 12);
     _radGradient.setColorAt(0, QColor(255, 255, 255));
     _radGradient.setColorAt(0.6, QColor(255, 255, 255));
@@ -304,13 +267,6 @@ ToggleCircle::ToggleCircle(QWidget* parent, QColor color, bool rect)
     _gradient.setColorAt(0.72, QColor(255, 255, 255));
     _gradient.setColorAt(1, QColor(255, 255, 255));
 
-    _gdisabled = QLinearGradient(3, 18, 20, 4);
-    _gdisabled.setColorAt(0, QColor(230, 230, 230));
-    _gdisabled.setColorAt(0.55, QColor(210, 210, 210));
-    _gdisabled.setColorAt(0.72, QColor(230, 230, 230));
-    _gdisabled.setColorAt(1, QColor(230, 230, 230));
-
-    _enabled = true;
 }
 ToggleCircle::~ToggleCircle()
 {
@@ -332,31 +288,20 @@ void ToggleCircle::paintEvent(QPaintEvent*)
     painter->setBrush(QColor(210, 210, 210));
     painter->drawEllipse(2, 2, 16, 16);
 
-    if (_enabled)
-    {
-        painter->setBrush(_gradient);
-        painter->drawEllipse(3, 3, 14, 14);
-    }
-    else
-    {
-        painter->setBrush(_gdisabled);
-        painter->drawEllipse(3, 3, 14, 14);
-    }
+    painter->setBrush(_gradient);
+    painter->drawEllipse(3, 3, 14, 14);
+
 
     painter->end();
 }
-void ToggleCircle::setEnabled(bool flag)
-{
-    _enabled = flag;
-}
 
-ToggleButton::ToggleButton(QWidget* parent, Style style, bool startValue)
+ToggleButton::ToggleButton(QWidget* parent, Style style, bool startValue, QColor background)
         : QWidget(parent)
         , _value(startValue)
         , _duration(100)
-        , _enabled(true)
+        , _oncolor(background)
 {
-    _pencolor = QColor(120, 120, 120);
+    _pencolor = QColor(Qt::lightGray);
 
     _gradient1 = QLinearGradient(35, 30, 35, 0);
     _gradient1.setColorAt(0, QColor(210, 210, 210));
@@ -364,20 +309,7 @@ ToggleButton::ToggleButton(QWidget* parent, Style style, bool startValue)
     _gradient1.setColorAt(0.82, QColor(255, 255, 255));
     _gradient1.setColorAt(1, QColor(210, 210, 210));
 
-    _gradient2 = QLinearGradient(50, 30, 35, 0);
-    _gradient2.setColorAt(0, QColor(230, 230, 230));
-    _gradient2.setColorAt(0.25, QColor(255, 255, 255));
-    _gradient2.setColorAt(0.82, QColor(255, 255, 255));
-    _gradient2.setColorAt(1, QColor(230, 230, 230));
-
-    _gdisabled = QLinearGradient(50, 30, 35, 0);
-    _gdisabled.setColorAt(0, QColor(200, 200, 200));
-    _gdisabled.setColorAt(0.25, QColor(230, 230, 230));
-    _gdisabled.setColorAt(0.82, QColor(230, 230, 230));
-    _gdisabled.setColorAt(1, QColor(200, 200, 200));
-
-    _offcolor = QColor(255, 255, 255);
-    _oncolor = QColor(154, 205, 50);
+    _offcolor = Qt::black;
     _tol = 0;
     _borderradius = 12;
     _labeloff = new QLabel(this);
@@ -399,14 +331,13 @@ ToggleButton::ToggleButton(QWidget* parent, Style style, bool startValue)
     _labelon->setText("On");
     _labeloff->move(27, 3);
     _labelon->move(5, 3);
-    setFixedSize(QSize(70, 24));
+    setFixedHeight(24);
     if (style == Style::YESNO)
     {
         _labeloff->setText("No");
         _labelon->setText("Yes");
         _labeloff->move(33, 3);
         _labelon->move(8, 3);
-        setFixedSize(QSize(70, 24));
     }
     else if (style == Style::TRUEFALSE)
     {
@@ -414,13 +345,11 @@ ToggleButton::ToggleButton(QWidget* parent, Style style, bool startValue)
         _labelon->setText("True");
         _labeloff->move(38, 3);
         _labelon->move(7, 3);
-        setFixedSize(QSize(85, 24));
     }
     if (style == Style::EMPTY)
     {
         _labeloff->setText("");
         _labelon->setText("");
-        setFixedSize(QSize(55, 24));
     }
 
     _labeloff->setStyleSheet("color: rgb(120, 120, 120); font-weight: bold;");
@@ -455,26 +384,10 @@ void ToggleButton::paintEvent(QPaintEvent*)
     painter->setBrush(_gradient1);
     painter->drawRoundedRect(1, 1, width() - 2, height() - 2, 10, 10);
 
-    painter->setBrush(QColor(210, 210, 210));
-    painter->drawRoundedRect(2, 2, width() - 4, height() - 4, 10, 10);
-
-    if (_enabled)
-    {
-        painter->setBrush(_gradient2);
-        painter->drawRoundedRect(3, 3, width() - 6, height() - 6, 7, 7);
-    }
-    else
-    {
-        painter->setBrush(_gdisabled);
-        painter->drawRoundedRect(3, 3, width() - 6, height() - 6, 7, 7);
-    }
     painter->end();
 }
 void ToggleButton::mousePressEvent(QMouseEvent*)
 {
-    if (!_enabled)
-        return;
-
     __btn_move->stop();
     __back_move->stop();
     __btn_move->setDuration(_duration);
@@ -510,22 +423,7 @@ void ToggleButton::mousePressEvent(QMouseEvent*)
     _value = !_value;
    // emit valueChanged(_value);
 }
-void ToggleButton::setEnabled(bool flag)
-{
-    _enabled = flag;
-    _circle->setEnabled(flag);
-    _background->setEnabled(flag);
-    if (flag)
-        _labelon->show();
-    else
-    {
-        if (value())
-            _labelon->show();
-        else
-            _labelon->hide();
-    }
-    QWidget::setEnabled(flag);
-}
+
 void ToggleButton::setValue(bool flag)
 {
     if (flag == value())
@@ -534,7 +432,6 @@ void ToggleButton::setValue(bool flag)
     {
         _value = flag;
         _update();
-        setEnabled(_enabled);
     }
 }
 bool ToggleButton::value() const
@@ -554,7 +451,6 @@ void ToggleButton::_update()
         final_size = QSize(hback, hback);
         xf = 2;
     }
-
     _circle->move(QPoint(xf, y));
     _background->resize(final_size);
 }

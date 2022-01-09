@@ -350,9 +350,9 @@ void SwitchCircle::setEnabled(bool flag)
     _enabled = flag;
 }
 
-SwitchButton::SwitchButton(QWidget* parent, Style style)
+SwitchButton::SwitchButton(QWidget* parent, Style style, bool startValue)
         : QWidget(parent)
-        , _value(false)
+        , _value(startValue)
         , _duration(100)
         , _enabled(true)
 {
@@ -425,7 +425,6 @@ SwitchButton::SwitchButton(QWidget* parent, Style style)
 
     _labeloff->setStyleSheet("color: rgb(120, 120, 120); font-weight: bold;");
     _labelon->setStyleSheet("color: rgb(255, 255, 255); font-weight: bold;");
-
     _background->resize(20, 20);
 
     _background->move(2, 2);

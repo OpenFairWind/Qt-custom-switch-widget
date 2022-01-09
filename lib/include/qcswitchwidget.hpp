@@ -16,6 +16,7 @@
 #include <QMouseEvent>
 #include <QStyleOption>
 #include <QPushButton>
+#include <QLabel>
 
 
 
@@ -29,9 +30,9 @@
 
 class QcSwitchWidget;
 class SwitchBackground;
-class SwitchCircle
-class SwitchButton
-class ToggleButton
+class SwitchCircle;
+class SwitchButton;
+class ToggleButton;
 
 class QCSWITCH_DECL QcSwitchWidget : public QWidget
 {
@@ -155,7 +156,7 @@ public:
     };
 
 public:
-    SwitchButton(QWidget *parent = nullptr, Style style = Style::ONOFF);
+    SwitchButton(QWidget *parent = nullptr, Style style = Style::ONOFF, bool startValue = false);
     ~SwitchButton();
 
     void mousePressEvent(QMouseEvent *) override;

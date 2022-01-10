@@ -146,7 +146,7 @@ public:
     };
 
 public:
-    ToggleButton(QWidget *parent = nullptr, Style style = Style::ONOFF, bool startValue = false, QColor background = Qt::white);
+    ToggleButton(QWidget *parent = nullptr, Style style = Style::ONOFF, bool startValue = false, QColor color = Qt::white);
     ~ToggleButton();
 
     void mousePressEvent(QMouseEvent *) override;

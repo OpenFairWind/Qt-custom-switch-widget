@@ -325,13 +325,14 @@ ToggleButton::ToggleButton(QWidget* parent, Style style, bool startValue, QColor
     __back_move->setPropertyName("size");
 
     setWindowFlags(Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground);
+   // setAttribute(Qt::WA_TranslucentBackground);
 
     _labeloff->setText("Off");
     _labelon->setText("On");
-    _labeloff->move(27, 3);
-    _labelon->move(5, 3);
+    _labeloff->move(30, 3);
+    _labelon->move(6, 3);
     setFixedHeight(24);
+    setMinimumWidth(70);
     if (style == Style::YESNO)
     {
         _labeloff->setText("No");
@@ -352,8 +353,9 @@ ToggleButton::ToggleButton(QWidget* parent, Style style, bool startValue, QColor
         _labelon->setText("");
     }
 
-    _labeloff->setStyleSheet("color: rgb(120, 120, 120); font-weight: bold;");
+    _labeloff->setStyleSheet("color: rgb(120, 120, 120); background-color: rgb(255, 255, 255); font-weight: bold;");
     _labelon->setStyleSheet("color: rgb(255, 255, 255); font-weight: bold;");
+
     _background->resize(20, 20);
 
     _background->move(2, 2);

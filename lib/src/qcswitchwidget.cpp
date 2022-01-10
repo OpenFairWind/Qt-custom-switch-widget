@@ -463,6 +463,7 @@ SwitchButton::SwitchButton(QWidget* parent): QWidget(parent)
     pushButton = new QPushButton(this);
     pushButton->setObjectName("pushButton");
     pushButton->setCheckable(true);
+    pushButton->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
     vLay->addWidget(pushButton);
     this->setLayout(vLay);
 }
@@ -478,10 +479,10 @@ void SwitchButton::setStylesheet(QString iconCheckPath, QString iconUncheckPath)
         qDebug("File doesn't exists. Please check input file path!.");
     else {
         QString styleSheet = "QPushButton#" + pushButton->objectName() +
-                             "{ border:0px; height: 60px; min-width: 180px; border:0px;";
+                             "{ border:0px;";
         styleSheet.append("border-image: url(");
         styleSheet.append(iconCheckPath);
-        styleSheet.append(") 0 0 0 0 stretch stretch;margin-left:5px;margin-right:5px;padding: 0px;background-color:none;}");
+        styleSheet.append(") 0 0 0 0 stretch stretch;margin-left:1px;margin-right:1px;padding: 0px;background-color:none;}");
 
         styleSheet.append("QPushButton#" + pushButton->objectName() + ":checked{border-image: url(");
         styleSheet.append(iconUncheckPath);

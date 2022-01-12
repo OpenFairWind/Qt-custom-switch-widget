@@ -5,7 +5,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     SwitchButton w;
-    w.setStylesheet("../../../examples/OnOffButton/power_on.png", "../../../examples/OnOffButton/power_off.png");
+    w.setIcons("../../../examples/OnOffButton/power_on.png", "../../../examples/OnOffButton/power_off.png");
+    w.setStatus(false);
     w.show();
     return a.exec();
 }

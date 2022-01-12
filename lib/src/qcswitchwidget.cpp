@@ -466,6 +466,7 @@ SwitchButton::SwitchButton(QWidget* parent): QWidget(parent)
     pushButton->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
     vLay->addWidget(pushButton);
     this->setLayout(vLay);
+    connect(pushButton, &QPushButton::clicked, this, &SwitchButton::onClick);
 }
 
 SwitchButton::~SwitchButton()

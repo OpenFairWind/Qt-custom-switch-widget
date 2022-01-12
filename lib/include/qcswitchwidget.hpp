@@ -187,7 +187,8 @@ public:
     ~SwitchButton();
     void setStylesheet(QString, QString);
     QLabel* addLabel(float);
-
+signals:
+    void onClick(bool status);
 private:
     QPushButton* pushButton;
 };

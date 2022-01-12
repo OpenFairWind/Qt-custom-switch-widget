@@ -185,12 +185,15 @@ class QCSWITCH_DECL SwitchButton : public QWidget
 public:
     explicit SwitchButton(QWidget* parent = nullptr);
     ~SwitchButton();
-    void setStylesheet(QString, QString);
+    void setIcons(QString iconCheckPath, QString iconUncheckPath);
     QLabel* addLabel(float);
+    void setStatus(bool checked);
 signals:
     void onClick(bool status);
 private:
-    QPushButton* pushButton;
+    QString _iconCheck;
+    QString _iconUncheck;
+    QPushButton* _pushButton= nullptr;
 };
 
 #endif //QCSWITCHWIDGET_HPP

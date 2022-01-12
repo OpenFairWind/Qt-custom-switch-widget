@@ -7,6 +7,7 @@
 #include <utility>
 #include "qcswitchwidget.hpp"
 #include <QVBoxLayout>
+#include <qicon.h>
 
 QcSwitchWidget::QcSwitchWidget(QWidget *parent) :
         QWidget(parent)
@@ -460,36 +461,36 @@ void ToggleButton::_update()
 SwitchButton::SwitchButton(QWidget* parent): QWidget(parent)
 {
     QVBoxLayout* vLay = new QVBoxLayout(this);
-    pushButton = new QPushButton(this);
-    pushButton->setObjectName("pushButton");
-    pushButton->setCheckable(true);
-    pushButton->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
-    vLay->addWidget(pushButton);
+    _pushButton = new QPushButton(this);
+    _pushButton->setObjectName("pushButton");
+    _pushButton->setCheckable(true);
+    _pushButton->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
+    vLay->addWidget(_pushButton);
     this->setLayout(vLay);
-    connect(pushButton, &QPushButton::clicked, this, &SwitchButton::onClick);
+    connect(_pushButton, &QPushButton::clicked, this, &SwitchButton::onClick);
 }
 
 SwitchButton::~SwitchButton()
 {}
 //max-width: 180px;
-void SwitchButton::setStylesheet(QString iconCheckPath, QString iconUncheckPath)
+void SwitchButton::setIcons(QString iconCheckPath, QString iconUncheckPath)
 {
     QFile fileIconCheck(iconCheckPath);
     QFile fileIconUnCheck(iconUncheckPath);
     if(!fileIconCheck.exists() || !fileIconUnCheck.exists())
         qDebug("File doesn't exists. Please check input file path!.");
     else {
-        QString styleSheet = "QPushButton#" + pushButton->objectName() +
+        _iconCheck = "QPushButton#" + _pushButton->objectName() +
                              "{ border:0px;";
-        styleSheet.append("border-image: url(");
-        styleSheet.append(iconCheckPath);
-        styleSheet.append(") 0 0 0 0 stretch stretch;margin-left:1px;margin-right:1px;padding: 0px;background-color:none;}");
+        _iconCheck.append("border-image: url(");
+        _iconCheck.append(iconCheckPath);
+        _iconCheck.append(") 0 0 0 0 stretch stretch;margin-left:1px;margin-right:1px;padding: 0px;background-color:none;}");
 
-        styleSheet.append("QPushButton#" + pushButton->objectName() + ":checked{border-image: url(");
-        styleSheet.append(iconUncheckPath);
-        styleSheet.append(") 0 0 0 0 stretch stretch;}");
-
-        this->setStyleSheet(styleSheet);
+        _iconUncheck = "QPushButton#" + _pushButton->objectName() +
+                     "{ border:0px;";
+        _iconUncheck.append("border-image: url(");
+        _iconUncheck.append(iconUncheckPath);
+        _iconUncheck.append(") 0 0 0 0 stretch stretch;margin-left:1px;margin-right:1px;padding: 0px;background-color:none;}");
     }
 }
 
@@ -497,6 +498,14 @@ QLabel* SwitchButton::addLabel(float position)
 {
     auto item = new QLabel(this);
     return item;
+}
+
+void SwitchButton::setStatus(bool checked)
+{
+    if(_pushButton)
+        //force push button status with status of first run. (the default status of push button is true)
+        _pushButton->setChecked(!checked);
+        this->setStyleSheet(checked ? _iconCheck : _iconUncheck);
 }
 
 static void setStylesheet(QWidget* widget,QString styleSheet)

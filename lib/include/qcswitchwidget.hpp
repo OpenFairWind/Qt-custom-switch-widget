@@ -11,6 +11,12 @@
 #include <QObject>
 #include <QRectF>
 #include <QtMath>
+#include <QPropertyAnimation>
+#include <QAbstractButton>
+#include <QMouseEvent>
+#include <QStyleOption>
+#include <QPushButton>
+#include <QLabel>
 
 
 
@@ -23,6 +29,10 @@
 #endif
 
 class QcSwitchWidget;
+class ToggleBackground;
+class ToggleCircle;
+class ToggleButton;
+class SwitchButton;
 
 class QCSWITCH_DECL QcSwitchWidget : public QWidget
 {
@@ -92,5 +102,98 @@ private:
     void drawBezel(bool drawBezel);
 };
 
+class QCSWITCH_DECL ToggleBackground : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit ToggleBackground(QWidget* parent = nullptr, QColor color = Qt::white, bool rect = false);
+    ~ToggleBackground() override;
+    void paintEvent(QPaintEvent* event) override;
+
+private:
+    bool            _rect;
+    int             _borderradius;
+    QColor          _pencolor;
+};
+
+class QCSWITCH_DECL ToggleCircle : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit ToggleCircle(QWidget* parent = nullptr, QColor color = QColor(255, 255, 255), bool rect = false);
+    ~ToggleCircle() override;
+    void paintEvent(QPaintEvent* event) override;
+
+private:
+    bool            _rect;
+    int             _borderradius;
+    QColor          _color;
+    QColor          _pencolor;
+    QRadialGradient _radGradient;
+    QLinearGradient _gradient;
+};
+
+class QCSWITCH_DECL ToggleButton : public QWidget
+{
+    Q_OBJECT
+public:
+    enum Style
+    {
+        YESNO,
+        ONOFF,
+        TRUEFALSE,
+        EMPTY
+    };
+
+public:
+    ToggleButton(QWidget *parent = nullptr, Style style = Style::ONOFF, bool startValue = false, QColor color = Qt::white);
+    ~ToggleButton();
+
+    void mousePressEvent(QMouseEvent *) override;
+    void paintEvent(QPaintEvent* event) override;
+    void setValue(bool);
+    bool value() const;
+signals:
+    void onClick(bool status);
+
+private:
+    bool _value;
+    int  _duration;
+
+    QLinearGradient _gradient1;
+    //QLinearGradient _gradient2;
+
+    QColor _pencolor;
+    QColor _offcolor;
+    QColor _oncolor;
+
+    QLabel*           _labeloff;
+    ToggleBackground* _background;
+    QLabel*           _labelon;
+    ToggleCircle*     _circle;
+
+    QPropertyAnimation* __btn_move;
+    QPropertyAnimation* __back_move;
+    void _update();
+};
+
+static QCSWITCH_DECL void setStylesheet(QWidget*, QString );
+
+class QCSWITCH_DECL SwitchButton : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit SwitchButton(QWidget* parent = nullptr);
+    ~SwitchButton();
+    void setIcons(QString iconCheckPath, QString iconUncheckPath);
+    QLabel* addLabel(float);
+    void setStatus(bool checked);
+signals:
+    void onClick(bool status);
+private:
+    QString _iconCheck;
+    QString _iconUncheck;
+    QPushButton* _pushButton= nullptr;
+};
 
 #endif //QCSWITCHWIDGET_HPP

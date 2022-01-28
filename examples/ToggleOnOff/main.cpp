@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     QHBoxLayout layout;
     widget->setLayout(&layout);
     widget->setMinimumSize(100,50);
-    ToggleButton* sbtn = new ToggleButton(widget, ToggleButton::Style::ONOFF, false ,Qt::blue);
+    ToggleButton* sbtn = new ToggleButton(widget, ToggleButton::Style::ONOFF, true ,Qt::blue);
     layout.addWidget(sbtn);
     widget->show();
     return a.exec();

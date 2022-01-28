@@ -153,6 +153,8 @@ public:
     void paintEvent(QPaintEvent* event) override;
     void setValue(bool);
     bool value() const;
+signals:
+    void onClick(bool status);
 
 private:
     bool _value;
@@ -164,8 +166,6 @@ private:
     QColor _pencolor;
     QColor _offcolor;
     QColor _oncolor;
-    int    _tol;
-    int    _borderradius;
 
     QLabel*           _labeloff;
     ToggleBackground* _background;

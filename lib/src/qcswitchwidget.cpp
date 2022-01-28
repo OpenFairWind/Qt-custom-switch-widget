@@ -311,8 +311,6 @@ ToggleButton::ToggleButton(QWidget* parent, Style style, bool startValue, QColor
     _gradient1.setColorAt(1, QColor(210, 210, 210));
 
     _offcolor = Qt::black;
-    _tol = 0;
-    _borderradius = 12;
     _labeloff = new QLabel(this);
     _background = new ToggleBackground(this, _oncolor);
     _labelon = new QLabel(this);
@@ -326,7 +324,6 @@ ToggleButton::ToggleButton(QWidget* parent, Style style, bool startValue, QColor
     __back_move->setPropertyName("size");
 
     setWindowFlags(Qt::FramelessWindowHint);
-   // setAttribute(Qt::WA_TranslucentBackground);
 
     _labeloff->setText("Off");
     _labelon->setText("On");
@@ -358,11 +355,9 @@ ToggleButton::ToggleButton(QWidget* parent, Style style, bool startValue, QColor
     _labelon->setStyleSheet("color: rgb(255, 255, 255); font-weight: bold;");
 
     _background->resize(20, 20);
-
     _background->move(2, 2);
     _circle->move(2, 2);
 }
-
 ToggleButton::~ToggleButton()
 {
     delete _circle;
@@ -388,8 +383,28 @@ void ToggleButton::paintEvent(QPaintEvent*)
     painter->drawRoundedRect(1, 1, width() - 2, height() - 2, 10, 10);
 
     painter->end();
+
+    _update();
 }
 void ToggleButton::mousePressEvent(QMouseEvent*)
+{
+    onClick(!_value);
+}
+void ToggleButton::setValue(bool flag)
+{
+    if (flag == _value)
+        return;
+    else
+    {
+        _value=flag;
+        _update();
+    }
+}
+bool ToggleButton::value() const
+{
+    return _value;
+}
+void ToggleButton::_update()
 {
     __btn_move->stop();
     __back_move->stop();
@@ -422,40 +437,6 @@ void ToggleButton::mousePressEvent(QMouseEvent*)
     __btn_move->start();
     __back_move->start();
 
-    // Assigning new current value
-    _value = !_value;
-   // emit valueChanged(_value);
-}
-
-void ToggleButton::setValue(bool flag)
-{
-    if (flag == value())
-        return;
-    else
-    {
-        _value = flag;
-        _update();
-    }
-}
-bool ToggleButton::value() const
-{
-    return _value;
-}
-void ToggleButton::_update()
-{
-    int hback = 20;
-    QSize final_size(width() - 4, hback);
-
-    int y = 2;
-    int xf = width() - 22;
-
-    if (_value)
-    {
-        final_size = QSize(hback, hback);
-        xf = 2;
-    }
-    _circle->move(QPoint(xf, y));
-    _background->resize(final_size);
 }
 
 SwitchButton::SwitchButton(QWidget* parent): QWidget(parent)
@@ -470,9 +451,8 @@ SwitchButton::SwitchButton(QWidget* parent): QWidget(parent)
     connect(_pushButton, &QPushButton::clicked, this, &SwitchButton::onClick);
 }
 
-SwitchButton::~SwitchButton()
-{}
-//max-width: 180px;
+SwitchButton::~SwitchButton(){}
+
 void SwitchButton::setIcons(QString iconCheckPath, QString iconUncheckPath)
 {
     QFile fileIconCheck(iconCheckPath);

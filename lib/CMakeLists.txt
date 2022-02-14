@@ -25,7 +25,7 @@ target_include_directories(qcswitchwidget
 
 target_compile_definitions(qcswitchwidget
         PRIVATE
-        QGV_EXPORT
+        QCSWUTCH_COMPILE_LIBRARY
         )
 
 target_link_libraries(qcswitchwidget

@@ -1,7 +1,10 @@
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt5 REQUIRED COMPONENTS
+# Set the QT version
+set(QT_VERSION 5)
+
+find_package(Qt${QT_VERSION}  REQUIRED COMPONENTS
         Core
         Gui
         Widgets
@@ -30,9 +33,9 @@ target_compile_definitions(qcswitchwidget
 
 target_link_libraries(qcswitchwidget
         PRIVATE
-        Qt5::Core
-        Qt5::Gui
-        Qt5::Widgets
+        Qt${QT_VERSION}::Core
+        Qt${QT_VERSION}::Gui
+        Qt${QT_VERSION}::Widgets
         )
 
 add_library(QcSwitchWidget ALIAS qcswitchwidget)

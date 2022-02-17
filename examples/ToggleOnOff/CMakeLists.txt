@@ -5,7 +5,10 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5 REQUIRED COMPONENTS
+# Set the QT version
+set(QT_VERSION 5)
+
+find_package(Qt${QT_VERSION} REQUIRED COMPONENTS
         Core
         Gui
         Widgets
@@ -18,8 +21,8 @@ add_executable(ToggleOnOff-example
 
 target_link_libraries(ToggleOnOff-example
         PRIVATE
-        Qt5::Core
-        Qt5::Gui
-        Qt5::Widgets
+        Qt${QT_VERSION}::Core
+        Qt${QT_VERSION}::Gui
+        Qt${QT_VERSION}::Widgets
         QcSwitchWidget
         )
